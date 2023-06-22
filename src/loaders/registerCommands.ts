@@ -30,13 +30,12 @@ function registerCommands(commandsJSON: RESTPostAPIChatInputApplicationCommandsJ
     const rest = new REST().setToken(process.env.BOT_TOKEN || "");
     (async () => {
         try {
-            console.log(`Started refreshing ${commandsJSON.length} application (/) commands.`);
+            if (!process.env.CLIENT_ID) return console.log("No client id in .env");
 
-            // for 1 guild
-            const data: any = await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID || "", "923496191411507260"), { body: commandsJSON });
-
-            // for all guilds (untested)
-            //const data: any = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID || ''), { body: commandsJSON });
+            let data: any;
+            if (process.env.GUILD_ID)
+                data = await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID || "", process.env.GUILD_ID), { body: commandsJSON });
+            else data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID || ""), { body: commandsJSON });
 
             console.log(`Successfully reloaded ${data.length} application (/) commands.`);
         } catch (error) {
