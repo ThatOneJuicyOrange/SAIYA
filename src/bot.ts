@@ -3,6 +3,7 @@ import path from "path";
 import BotClient from "@/structures/BotClient";
 import registerCommands from "@/loaders/registerCommands";
 import registerListeners from "@/loaders/registerListeners";
+import keepAlive from "./server";
 
 dotenv.config();
 
@@ -18,5 +19,7 @@ const client = new BotClient({
 
 registerCommands(client);
 registerListeners(client);
+
+keepAlive();
 
 client.login(token);

@@ -34,10 +34,9 @@ export async function manageXP(user: User) {
                 lastExperience: new Date(),
             },
         });
-        if (updatedUser) console.log(`user: ${user.username} aquired ${xp}xp`);
-
-        const didLevelUp = xpInfo(updatedUser.experience).currentLevel > xpInfo(user.experience).currentLevel;
-        console.log(didLevelUp);
+        const newLevel = xpInfo(updatedUser.experience).currentLevel;
+        const didLevelUp = newLevel > xpInfo(user.experience).currentLevel;
+        if (didLevelUp) console.log(`${user.username} just levelled up to ${newLevel}`);
         return updatedUser;
     }
     return user;
